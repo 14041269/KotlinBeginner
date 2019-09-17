@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">KotlinApp</string>
     <!--string name ="button">Incrementar</string>-->
-    <string name="button">Abrir segunda activity</string>
+    <string name="button">ExplicitIntent</string>
+    <string name="returnButton">Finalizar activity</string>
+    <string name="implicitIntentButton">Implicit intent</string>
+
 
 </resources>

@@ -1,14 +1,18 @@
 package com.example.kotlinapp
 
+import android.app.Activity
 import android.content.Intent
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
+    private  val SECOND_ACTIVITY : Int = 1
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -25,7 +29,13 @@ class MainActivity : AppCompatActivity() {
         incrementButton.setOnClickListener{
             val intent = Intent(this@MainActivity,SecondActivity::class.java)
             intent.putExtra("Nombre","Juan")
-            startActivity(intent)
+
+            // this is when you are not expecting any result from the activity you are calling
+            //startActivity(intent)
+
+            // this is used when you are expecting a result from the activity you are calling
+            //then, you also have to overrinde onActivityResult method
+            startActivityForResult(intent, SECOND_ACTIVITY)
         }
 
         /*incrementButton.setOnLongClickListener{
@@ -35,6 +45,13 @@ class MainActivity : AppCompatActivity() {
         }
         */
 
+        implicitIntentButton.setOnClickListener {
+            val implicitIntent = Intent()
+
+            implicitIntent.action = Intent.ACTION_VIEW
+            implicitIntent.data = Uri.parse("https://www.google.com")
+            startActivity(implicitIntent)
+        }
 
     }
 
@@ -47,5 +64,15 @@ class MainActivity : AppCompatActivity() {
     }
     */
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if(requestCode == SECOND_ACTIVITY && resultCode == Activity.RESULT_OK)
+        {
+            val resultMessage = data?.getStringExtra("Result")
+            Log.d("Activity result","$resultMessage")
+            Toast.makeText(this,"SECOND ACTIVITY WAS STOPPED CORRECTLY AND IT JUST SENT THE MESSAGE: $resultMessage",Toast.LENGTH_SHORT)
+        }
+    }
 
 }
